@@ -1,9 +1,8 @@
-import board
 import asyncio
+import board
 import pwmio  # using this instead of pulseio
 import neopixel
 import wifi
-import storage
 from adafruit_wsgi.wsgi_app import WSGIApp
 import wsgiserver as server
 
@@ -37,7 +36,7 @@ html = ""
 try:
     with open("/index.html", "r") as f:
         html = f.readlines()
-except OSError as e:  # Typically when the filesystem isn't writeable...
+except OSError:  # Typically when the filesystem isn't writeable...
     print("Error loading index.html")
     raise
 
