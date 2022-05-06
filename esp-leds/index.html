@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Colors</title>
+  <style>
+    body {
+      background: #000;
+      color: #FFF;
+      font-family: sans-serif;
+    }
+    h1 {
+      margin: auto;
+      text-align: center;
+    }
+    #show {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: auto;
+    }
+    #show div {
+      position: absolute;
+      width: 66px;
+      height: 66px;
+      opacity: 0.50;
+      border-radius: 66px;
+    }
+    #rr {
+      background-color: rgb(127, 0, 0);
+      left: 0;
+      top: 0;
+    }
+    #gg {
+      background-color: rgb(0, 127, 0);
+      right: 0;
+      top: 0;
+    }
+    #bb {
+      background-color: rgb(0, 0, 127);
+      left: 0;
+      bottom: 0;
+    }
+    div#mix {
+      background-color: rgb(127, 127, 127);
+      left: 25px;
+      top: 25px;
+      width: 50px;
+      height: 50px;
+      opacity: 0.75;
+    }
+    div#ww {
+      background-color: rgb(127, 127, 127);
+      right: 0;
+      bottom: 0;
+      /*width: 55px;
+      height: 55px;*/
+    }
+    ul { 
+      display: block;
+      width: 285px;
+      margin: auto;
+    }
+    li {
+      display: inline-block;
+    }
+    input[type="range"] {
+      height: 150px;
+      width: 30px;
+      margin: 5px 0px 0px 20px
+    }
+    #r {
+      margin-left: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Colors</h1>
+  <div id="show">
+    <div id="rr"></div>
+    <div id="gg"></div>
+    <div id="bb"></div>
+    <div id="ww"></div>
+    <div id="mix"></div>
+  </div>
+  <ul>
+    <li>
+      <input type="range" id="r" name="r" min="0" max="255" orient="vertical" value="127" onchange="color(this);update();" oninput="color(this)">
+      <label for="r">R</label>
+    </li>
+    <li>
+      <input type="range" id="g" name="g" min="0" max="255" orient="vertical" value="127" onchange="color(this);update();" oninput="color(this)">
+      <label for="g">G</label>
+    </li>
+    <li>
+      <input type="range" id="b" name="b" min="0" max="255" orient="vertical" value="127" onchange="color(this);update();" oninput="color(this)">
+      <label for="b">B</label>
+    </li>
+    <li>
+      <input type="range" id="w" name="w" min="0" max="255" orient="vertical" value="127" onchange="color(this);update();" oninput="color(this)">
+      <label for="W">W</label>
+    </li>
+  </ul>
+  <script>
+    const d = document;
+    const a = ['r', 'g', 'b', 'w'];
+    const c = a.reduce((s, v) => {
+      s[v] = d.getElementById(v);
+      s[v+v] = d.getElementById(v+v);
+      return s;
+    }, {});
+    c.mix = d.getElementById("mix");
+    const data = a.reduce((s, v) => {
+      s[v] = c[v].value;
+      return s;
+    }, {});
+    const display = function () {
+      c.rr.style.backgroundColor = "rgb(" + data.r + ", 0, 0)";
+      c.gg.style.backgroundColor = "rgb(0, " + data.g + ", 0)";
+      c.bb.style.backgroundColor = "rgb(0, 0, " + data.b + ")";
+      c.ww.style.backgroundColor = "rgb(" + data.w + ", " + data.w + ", " + data.w + ")";
+      c.mix.style.backgroundColor = "rgb(" + data.r + ", " + data.g + ", " + data.b + ")";
+    };
+    const color = function (input) {
+      const val = +input.value;
+      data[input.id] = val;
+      display();
+    };
+    
+    const postData = async function (url = '', data = {}) {
+      // Default options are marked with *
+      const response = await fetch(url, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        mode: 'same-origin', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer'  //, // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        //body: JSON.stringify(data) // body data type must match "Content-Type" header
+      });
+      return response.json(); // parses JSON response into native JavaScript objects
+    };
+
+    const update = function () {
+      const url = '/rgbwj/' + data.r + '/' + data.g + '/' + data.b + '/' + data.w;
+      console.log(url);
+      postData(url)
+        .then(data => {
+          console.log(data); // JSON data parsed by `data.json()` call
+        })
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    };
+  </script>
+</body>
+</html>
