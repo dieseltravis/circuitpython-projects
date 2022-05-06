@@ -1,0 +1,3 @@
+[submodule "portable-air-logger"]
+	path = portable-air-logger
+	url = https://github.com/dieseltravis/portable-air-logger.git
