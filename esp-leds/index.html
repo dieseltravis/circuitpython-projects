@@ -108,11 +108,13 @@
       s[v+v] = d.getElementById(v+v);
       return s;
     }, {});
+    
     c.mix = d.getElementById("mix");
     const data = a.reduce((s, v) => {
       s[v] = c[v].value;
       return s;
     }, {});
+
     const display = function () {
       c.rr.style.backgroundColor = "rgb(" + data.r + ", 0, 0)";
       c.gg.style.backgroundColor = "rgb(0, " + data.g + ", 0)";
@@ -120,6 +122,7 @@
       c.ww.style.backgroundColor = "rgb(" + data.w + ", " + data.w + ", " + data.w + ")";
       c.mix.style.backgroundColor = "rgb(" + data.r + ", " + data.g + ", " + data.b + ")";
     };
+
     const color = function (input) {
       const val = +input.value;
       data[input.id] = val;
@@ -135,9 +138,7 @@
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
           'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-        redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer'  //, // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         //body: JSON.stringify(data) // body data type must match "Content-Type" header
       });
@@ -149,7 +150,7 @@
       console.log(url);
       postData(url)
         .then(data => {
-          console.log(data); // JSON data parsed by `data.json()` call
+          console.log("Response: ", data);
         })
         .then(data => {
           console.log('Success:', data);
