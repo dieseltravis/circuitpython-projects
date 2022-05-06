@@ -1,5 +1,5 @@
-import board
 import asyncio
+import board
 import pwmio  # using this instead of pulseio
 import neopixel
 import wifi
