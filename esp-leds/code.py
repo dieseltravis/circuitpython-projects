@@ -6,12 +6,11 @@ import wifi
 from adafruit_wsgi.wsgi_app import WSGIApp
 import wsgiserver as server
 
-# TODO: figure out a fix to the strip flashing to full brightness on boot
-# RGBW strip: 31 and below is effectively 0, range is 0-65535
-rr = pwmio.PWMOut(board.A0, frequency=5000, duty_cycle=0)
-gg = pwmio.PWMOut(board.A1, frequency=5000, duty_cycle=0)
-bb = pwmio.PWMOut(board.A2, frequency=5000, duty_cycle=0)
-ww = pwmio.PWMOut(board.A3, frequency=5000, duty_cycle=0)
+# NOTE: don't use A0 because it has to be HIGH at boot
+rr = pwmio.PWMOut(board.A1, frequency=5000, duty_cycle=0)
+gg = pwmio.PWMOut(board.A2, frequency=5000, duty_cycle=0)
+bb = pwmio.PWMOut(board.A3, frequency=5000, duty_cycle=0)
+ww = pwmio.PWMOut(board.SDA, frequency=5000, duty_cycle=0)
 
 currentColor = (0, 16, 0)
 pixel = neopixel.NeoPixel(board.NEOPIXEL, 1)
